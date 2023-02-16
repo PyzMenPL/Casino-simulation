@@ -116,6 +116,7 @@ class Customer:
 
 
 # Constants
+AMOUNT_OF_CLIENTS = 100
 AMOUNT_OF_DAYS_TO_SIMULATE = 30
 AMOUNT_OF_SLOTS_SIMULATIONS = 1000
 AMOUNT_OF_CUPS_SIMULATIONS = 1000
@@ -129,12 +130,12 @@ casino = Casino("Golden grin")
 names = ["John", "Max", "Caroline", "Andrew", "Donald"]
 second_names = ["Bon Jovi", "Kolonko", "Kozub", "Tate", "Trump"]
 
-casino.new_customers()
+casino.new_customers(AMOUNT_OF_CLIENTS)
 
 # Casino simulation
 for i in range(0, AMOUNT_OF_DAYS_TO_SIMULATE):
     if i and i % AMOUNT_OF_DAYS_FOR_NEW_CLIENTS == 0:
-        casino.new_customers()
+        casino.new_customers(AMOUNT_OF_CLIENTS)
 
     for _ in range(0, AMOUNT_OF_SLOTS_SIMULATIONS):
         casino.slots(casino.customers[randint(0, len(casino.customers) - 1)])
