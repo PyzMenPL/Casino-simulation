@@ -10,6 +10,18 @@ class Casino:
     def show_info(self):
         print(self.name, "has", len(self.customers), "customers, and the balance is", self.balance, "USD")
 
+    def new_customers(self, amount=100):
+        self.customers = []
+
+        for _ in range(0, amount):
+            name = names[randint(0, 4)]
+            second_name = second_names[randint(0, 4)]
+            balance = randint(50, 1000)
+
+            client = Customer(name, second_name, balance)
+
+            self.customers.append(client)
+
     def check_customer(self, customer, fee):
         if customer.balance < fee:
             # print("Not enough money!")
@@ -104,11 +116,12 @@ class Customer:
 
 
 # Constants
-AMOUNT_OF_CLIENTS = 1000
+AMOUNT_OF_DAYS_TO_SIMULATE = 30
 AMOUNT_OF_SLOTS_SIMULATIONS = 1000
 AMOUNT_OF_CUPS_SIMULATIONS = 1000
 AMOUNT_OF_PLINKO_SIMULATIONS = 1000
 AMOUNT_OF_SAPER_SIMULATIONS = 1000
+AMOUNT_OF_DAYS_FOR_NEW_CLIENTS = 5
 
 casino = Casino("Golden grin")
 
@@ -116,27 +129,24 @@ casino = Casino("Golden grin")
 names = ["John", "Max", "Caroline", "Andrew", "Donald"]
 second_names = ["Bon Jovi", "Kolonko", "Kozub", "Tate", "Trump"]
 
-for _ in range(1, AMOUNT_OF_CLIENTS):
-    name = names[randint(0, 4)]
-    second_name = second_names[randint(0, 4)]
-    balance = randint(50, 1000)
-
-    client = Customer(name, second_name, balance)
-
-    casino.customers.append(client)
+casino.new_customers()
 
 # Casino simulation
-for _ in range(0, AMOUNT_OF_SLOTS_SIMULATIONS):
-    casino.slots(casino.customers[randint(0, len(casino.customers) - 1)])
+for i in range(0, AMOUNT_OF_DAYS_TO_SIMULATE):
+    if i and i % AMOUNT_OF_DAYS_FOR_NEW_CLIENTS == 0:
+        casino.new_customers()
 
-for _ in range(0, AMOUNT_OF_CUPS_SIMULATIONS):
-    casino.cups(casino.customers[randint(0, len(casino.customers) - 1)])
+    for _ in range(0, AMOUNT_OF_SLOTS_SIMULATIONS):
+        casino.slots(casino.customers[randint(0, len(casino.customers) - 1)])
 
-for _ in range(0, AMOUNT_OF_PLINKO_SIMULATIONS):
-    casino.plinko(casino.customers[randint(0, len(casino.customers) - 1)])
+    for _ in range(0, AMOUNT_OF_CUPS_SIMULATIONS):
+        casino.cups(casino.customers[randint(0, len(casino.customers) - 1)])
 
-for _ in range(0, AMOUNT_OF_SAPER_SIMULATIONS):
-    casino.saper(casino.customers[randint(0, len(casino.customers) - 1)])
+    for _ in range(0, AMOUNT_OF_PLINKO_SIMULATIONS):
+        casino.plinko(casino.customers[randint(0, len(casino.customers) - 1)])
+
+    for _ in range(0, AMOUNT_OF_SAPER_SIMULATIONS):
+        casino.saper(casino.customers[randint(0, len(casino.customers) - 1)])
 
 for client in casino.customers:
     client.show_info()
